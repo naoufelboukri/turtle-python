@@ -1,0 +1,2 @@
+PySimpleGUI
+opencv-python
