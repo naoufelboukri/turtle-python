@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-pathFile = './../imgs/nuage.jpg'
+pathFile = './../imgs/lion.jpg'
 
 image = cv2.imread(pathFile)
 
