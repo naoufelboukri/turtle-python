@@ -1,6 +1,8 @@
 import cv2
 
-image = cv2.imread('./imgs/licorne.png')
+pathFile = './../imgs/licorne.png'
+
+image = cv2.imread(pathFile)
 
 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
