@@ -29,7 +29,7 @@ On calcule la médiane des valeurs de gris.
 median_pix = np.median(gray_image)
 ```
 
-On calcule les seuils inférieurs et supérieurs pour l'algorithme Canny. Ces valeurs ont été calculées en entrainant le modèle sur plusierus images.
+On calcule les seuils inférieurs et supérieurs pour l'algorithme Canny. Ces valeurs ont été calculées en entrainant le modèle sur plusieurs images.
 
 ```PYTHON
 lower = int(max(0 ,0.25*median_pix))
