@@ -8,6 +8,7 @@ Le path est dans la variable pathFile et on charge l'image à l'aide de la bibli
 
 ```PYTHON
 pathFile = './../imgs/lion.jpg'
+image = cv2.imread(pathFile)
 ```
 
 On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image.
