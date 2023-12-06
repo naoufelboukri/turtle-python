@@ -8,4 +8,4 @@ Maintenant, on détecte les contours dont on a besoin grâce à l'algorithme Can
 
 On convertit l'image en contours noirs sur fond blanc à l'aide de la fonction threshold d'opencv.
 
-Pour finir, on créé la nouvelle image dans ce dossier.
+Pour finir, on créé la nouvelle image dans ce dossier qu'on nomme 'etape1.jpg'.
