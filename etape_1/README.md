@@ -2,16 +2,13 @@
 
 ## Approche/logique
 
-Dans un premier temps, on charge l'image souhaité qui est ici dans le dossier img. 
-
-Le path est dans la variable pathFile et on charge l'image à l'aide de la bibliothèque opencv dans la variable image.
+Dans un premier temps, on charge l'image souhaité passé en argument.
 
 ```PYTHON
-pathFile = './../imgs/lion.jpg'
-image = cv2.imread(pathFile)
+big_fernand(sys.argv[1])
 ```
 
-On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image.
+On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille 5*5 pour ne pas avoir un effet de flou trop important.
 
 ```PYTHON
 blurred_img = cv2.blur(image,ksize=(5,5))
@@ -23,13 +20,13 @@ Ensuite, on convertit l'image en niveaux de gris.
 gray_image = cv2.cvtColor(blurred_img, cv2.COLOR_BGR2GRAY)
 ```
 
-On calcule la médiane des valeurs de gris.
+On calcule la médiane des valeurs de gris. La médiane est moins sensible aux valeurs aberrantes que la moyenne. Si une image a des zones très lumineuses ou très sombres, la médiane peut être une mesure plus robuste pour caractériser la luminosité de l'image.
 
 ```PYTHON
 median_pix = np.median(gray_image)
 ```
 
-On calcule les seuils inférieurs et supérieurs pour l'algorithme Canny. Ces valeurs ont été calculées en entrainant le modèle sur plusieurs images.
+On calcule les seuils inférieurs et supérieurs pour l'algorithme Canny. Ces valeurs ont été calculées en entrainant le modèle sur plusieurs images. En prenant 25% et 75% de la médiane, ceci crée une plage de valeurs autour de la médiane qui peut être considérée comme représentative de l'intensité des contours dans l'image.
 
 ```PYTHON
 lower = int(max(0 ,0.25*median_pix))
