@@ -4,7 +4,7 @@
 
 On utilise numpy car les opérations sur les tableaux sont implémentés en C, ce qui les rend très rapides.
 
-On utilise opencv-python car le plug-in est hautement optimisé pour les opérations sur les images.
+On utilise opencv-python car le plug-in est hautement optimisé pour les opérations sur les images, ce qui permet une détection de contours rapide même pour des images de grande taille.
 
 
 ## Approche/logique
