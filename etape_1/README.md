@@ -3,6 +3,7 @@
 ## Choix Dépendances
 
 On utilise numpy car les opérations sur les tableaux sont implémentés en C, ce qui les rend très rapides.
+
 On utilise opencv-python car le plug-in est hautement optimisé pour les opérations sur les images.
 
 
