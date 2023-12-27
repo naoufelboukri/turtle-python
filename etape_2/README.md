@@ -1,4 +1,4 @@
-# Etape1
+# Etape2
 
 ## Choix Dépendances
 
@@ -15,10 +15,10 @@ Dans un premier temps, on charge l'image souhaité passé en argument.
 big_fernand(sys.argv[1])
 ```
 
-On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille 5*5 pour ne pas avoir un effet de flou trop important.
+On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille donnée en paramètre de la fonction par l'utilisateur. Privilégier des valeurs impaires pour avoir un effet de flou centré
 
 ```PYTHON
-blurred_img = cv2.blur(image,ksize=(5,5))
+blurred_img = cv2.blur(image,ksize=(intensity, intensity))
 ```
 
 Ensuite, on convertit l'image en niveaux de gris.
@@ -52,8 +52,8 @@ On convertit l'image en contours noirs sur fond blanc à l'aide d'un seuillage b
 ret, thresh = cv2.threshold(edges, 127, 255, cv2.THRESH_BINARY_INV)
 ```
 
-Pour finir, on créé la nouvelle image dans ce dossier qu'on nomme 'etape1.jpg'.
+Pour finir, on créé la nouvelle image dans ce dossier qu'on nomme 'etape2.jpg'.
 
 ```PYTHON
-cv2.imwrite('etape1.jpg', thresh)
+cv2.imwrite('etape2.jpg', thresh)
 ```
