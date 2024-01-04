@@ -57,3 +57,10 @@ Pour finir, on créé la nouvelle image dans ce dossier qu'on nomme 'etape2.jpg'
 ```PYTHON
 cv2.imwrite('etape2.jpg', thresh)
 ```
+## Execution du programme
+
+Argument à saisir: le chemin de l'image
+
+```PYTHON
+py main.py ../imgs/lion.jpg
+```
