@@ -25,13 +25,24 @@ def big_fernand(pathFile):
     
 def main():
     if len(sys.argv) < 2:
-      print('Argument manquant (fichier image source)')
+      print('Argument manquant (fichier image source)\n')
     else:
-      response = input('Appliquez un flou ? (y pour oui, n pour non)\n')
-      if response == 'y':
-        intensity= int(input('Indiquez une valeur d\'intensité\n'))
-        big_fernand_with_blur(sys.argv[1], intensity)
-      else:
-        big_fernand(sys.argv[1])
-
+      while True:
+        response = input('Appliquez un flou ? (y pour oui, n pour non)\n')
+        if response == "y":       
+          try:
+            intensity= int(input('Indiquez une valeur d\'intensité\n'))
+            if intensity % 2 != 0:
+                print("L'intensité du flou doit être paire\n")
+                continue
+          except ValueError:
+            print("Erreur: Entrez un nombre entier\n")
+            continue
+          big_fernand_with_blur(sys.argv[1], intensity)
+          break
+        elif response == "n":
+          big_fernand(sys.argv[1])
+          break
+        else:
+          print("Choix non valide. Veuillez répondre par 'oui' ou 'non'.\n")
 main()
