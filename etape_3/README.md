@@ -9,10 +9,13 @@ On utilise opencv-python car le plug-in est hautement optimisé pour les opérat
 
 ## Approche/logique
 
-Dans un premier temps, on charge l'image souhaité passé en argument.
-
+Dans un premier temps, nous initialisons les paramètres dans la classe Setting que nous passons par la suite en paramètre de la fonction **big_fernand**
+- Flou : boolean
+- Intensité du flou : integer
+- Rafraichissement de l'ecran : integer
 ```PYTHON
-big_fernand(sys.argv[1])
+s = Setting(path_file)
+big_fernand(s)
 ```
 
 On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille donnée en paramètre de la fonction par l'utilisateur. Privilégier des valeurs impaires pour avoir un effet de flou centré
@@ -52,8 +55,28 @@ On convertit l'image en contours noirs sur fond blanc à l'aide d'un seuillage b
 ret, thresh = cv2.threshold(edges, 127, 255, cv2.THRESH_BINARY_INV)
 ```
 
-Pour finir, on créé la nouvelle image dans ce dossier qu'on nomme 'etape2.jpg'.
+On initialise la classe MyTurtle dans lequel nous paramétrons l'écran et nous définissons l'affichage de notre image.
+Nous laissons en paramètre **thresh** qui est la représentation de l'image en binaire sur un tableau à 2 dimensions
 
 ```PYTHON
-cv2.imwrite('etape2.jpg', thresh)
+my_turtle = MyTurtle(thresh)
+my_turtle.set_tracer_active(s.update_value)
+my_turtle.hide_turtle()
 ```
+
+Pour finir, nous exécutons la fonction du dessin qui va récupérer l'ensemble des lignes et colonnes de l'image binaire et faire un point sur chaque case ayant une valeur du pixel égale à 0. Puis nous exécutons l'update à chaque ligne
+
+```PYTHON
+for row in range(rows):
+    for column in range(columns):
+        x = column - columns // 2
+        y = rows // 2 - row
+        self.t.penup()
+        self.t.goto(x, y)
+        if self.img[row, column] == 0:
+            self.t.pendown()
+            self.t.dot(1)
+    self.screen.update()
+```
+
+
