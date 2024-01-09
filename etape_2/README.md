@@ -15,9 +15,11 @@ Dans un premier temps, on charge l'image souhaité passé en argument.
 big_fernand(sys.argv[1])
 ```
 
-On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille donnée en paramètre de la fonction par l'utilisateur. Privilégier des valeurs impaires pour avoir un effet de flou centré
+On applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. On choisit un noyau de taille donnée en paramètre de la fonction par l'utilisateur. Nous vérifions que l'intensité soit impaire car à la différence des valeurs pairs, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
 ```PYTHON
+if intensity % 2 != 0:
+  intensity += 1
 blurred_img = cv2.blur(image,ksize=(intensity, intensity))
 ```
 

@@ -4,6 +4,8 @@ import sys
 
 def big_fernand_with_blur(pathFile, intensity):
     image = cv2.imread(pathFile)
+    if intensity % 2 != 0:
+      intensity += 1
     blurred_img = cv2.blur(image,ksize=(intensity, intensity))
     gray_image = cv2.cvtColor(blurred_img, cv2.COLOR_BGR2GRAY)
     median_pix = np.median(gray_image)
@@ -11,7 +13,8 @@ def big_fernand_with_blur(pathFile, intensity):
     upper = int(min(255,0.75*median_pix))
     edges = cv2.Canny(image=blurred_img, threshold1=lower,threshold2=upper)
     ret, thresh = cv2.threshold(edges, 127, 255, cv2.THRESH_BINARY_INV)
-    cv2.imwrite('etape2.jpg', thresh)
+    cv2.imshow('etape2.jpg', thresh)
+    cv2.waitKey(0)
 
 def big_fernand(pathFile):
     image = cv2.imread(pathFile)
@@ -21,7 +24,8 @@ def big_fernand(pathFile):
     upper = int(min(255,0.75*median_pix))
     edges = cv2.Canny(image, threshold1=lower,threshold2=upper)
     ret, thresh = cv2.threshold(edges, 127, 255, cv2.THRESH_BINARY_INV)
-    cv2.imwrite('etape2.jpg', thresh)
+    cv2.imshow('etape2.jpg', thresh)
+    cv2.waitKey(0)
     
 def main():
     if len(sys.argv) < 2:
@@ -32,9 +36,6 @@ def main():
         if response == "y":       
           try:
             intensity= int(input('Indiquez une valeur d\'intensité\n'))
-            if intensity % 2 != 0:
-                print("L'intensité du flou doit être paire\n")
-                continue
           except ValueError:
             print("Erreur: Entrez un nombre entier\n")
             continue
