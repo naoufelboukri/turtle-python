@@ -10,8 +10,5 @@ class Setting:
         self.blur = bool('Appliquer un flou ? ')
         if self.blur:
             self.intensity = int(input("Indiquer une valeur d'intensité : \n"))
-
-        self.mode = int(input("Choisir un mode de dessin (0: Dessin [Défaut] | 1 : Imprimer)"))
-
-        if self.mode == 1:
-            self.update_value = int(input("Indiquer une valeur de rafraichissement : \n"))
+        self.mode = int(input("Choisir un mode de dessin (0: Dessin [Défaut] | 1 : Imprimer)\n"))
+        self.update_value = int(input("Indiquer une valeur de rafraichissement : \n"))

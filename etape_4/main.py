@@ -15,7 +15,10 @@ def big_fernand(s):
     upper = int(min(255, 0.75 * median_pix))
     edges = cv2.Canny(image, threshold1=lower, threshold2=upper)
     ret, thresh = cv2.threshold(edges, 127, 255, cv2.THRESH_BINARY_INV)
-    my_turtle = MyTurtle(thresh)
+    contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = [c.squeeze() for c in contours]
+    contours = [c if c.ndim == 2 else c.reshape(1, 2) for c in contours]
+    my_turtle = MyTurtle(thresh, contours)
     if s.mode == 1:
         # imprimer le dessin
         my_turtle.set_tracer_active(s.update_value)
@@ -23,6 +26,7 @@ def big_fernand(s):
         my_turtle.print()
     else:
         # dessiner
+        my_turtle.set_tracer_active(s.update_value)
         my_turtle.draw()
 
 
