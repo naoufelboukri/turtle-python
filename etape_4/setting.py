@@ -1,14 +1,25 @@
-def bool(question):
-    response = input(question + '(y : n)\n')
-    return response == 'y'
-
+import cv2
+import sys
 
 class Setting:
-    def __init__(self, path_file):
-        print('# MONET MAKER #')
-        self.path_file = path_file
-        self.blur = bool('Appliquer un flou ? ')
-        if self.blur:
-            self.intensity = int(input("Indiquer une valeur d'intensité : \n"))
-        self.mode = int(input("Choisir un mode de dessin (0: Dessin [Défaut] | 1 : Imprimer)\n"))
-        self.update_value = int(input("Indiquer une valeur de rafraichissement : \n"))
+    def __init__(self, arguments):
+        self.blur = arguments.blur
+        self.update_value = arguments.update
+        self.image = cv2.imread(arguments.path)
+        self.mode = arguments.mode
+
+        if self.image is None:
+            print(f"Erreur : Ouverture du fichier impossible, vérifier le chemin")
+            sys.exit(1)
+
+        try:
+            upper_than_exception(self.blur, 'blur')
+            upper_than_exception(self.update_value, 'update')
+        except ValueError as e:
+            print(str(e))
+            sys.exit(1)
+
+
+def upper_than_exception(value, name, limit=0):
+    if value < limit:
+        raise ValueError(f"Erreur: '{name}' doit être un entier supérireur ou égale à 0")

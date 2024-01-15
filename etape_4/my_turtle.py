@@ -22,7 +22,7 @@ class MyTurtle:
         self.screen = turtle.Screen()
 
     def set_tracer_active(self, tracer_update):
-        self.screen.tracer(tracer_update, 0)
+        self.screen.tracer(0, tracer_update)
 
     def set_image(self, img):
         self.img = img

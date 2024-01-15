@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import sys
 import argparse
 from my_turtle import MyTurtle
 from setting import Setting
