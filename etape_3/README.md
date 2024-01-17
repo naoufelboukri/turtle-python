@@ -19,14 +19,14 @@ Pour lancer le programme, pusiqu'il faut gérer de plus en plus de paramètre, i
 
 Ainsi, le programme se lance de la manière suivante 
 
-`python3 main.py --path=[path] --blur[blur] --update[update]`
+`python3 main.py --path=[path] --blur=[blur] --update=[update] --blur_type=[blur_type]`
 
-| **Arguments** | **Type** | **Explication**                                                    |
-|:--------------|:---------|:-------------------------------------------------------------------|
-| *"--path"*    | string   | Correspond au chemin relatif de l'image que l'on souhaite utiliser |
-| *"--blur"*    | int      | Correspond à la valeur de flou que l'on souahaite mettre ( >= 0)   |
-| *"--update"*  | int      | Correspond à la valeur de rafraichissement de la page ( >= 0)      |
-
+| **Arguments**  | **Type** | **Explication**                                                    |
+|:---------------|:---------|:-------------------------------------------------------------------|
+| *"--path"*     | string   | Correspond au chemin relatif de l'image que l'on souhaite utiliser |
+| *"--blur"*     | int      | Correspond à la valeur de flou que l'on souahaite mettre ( >= 0)   |
+| *"--update"*   | int      | Correspond à la valeur de rafraichissement de la page ( >= 0)      |
+| *"--blur_type"*| string   | Correspond au type de flou appliqué, les choix possibles sont "gaussian","box" et bilaterl |
 
 ## Approche/logique
 
@@ -90,7 +90,7 @@ Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0,
 ```PYTHON
     if s.blur > 0:
         intensity = s.blur
-        if intensity % 2 != 0:
+        if intensity % 2 == 0:
             intensity += 1
         s.image = cv2.blur(s.image, ksize=(intensity, intensity))
 ```
@@ -170,7 +170,7 @@ for row in range(rows):
         self.t.goto(x, y)
         if self.img[row, column] == 0:
             self.t.pendown()
-            self.t.dot(1)
+            self.t.forward(1)
     self.screen.update()
 ```
 
