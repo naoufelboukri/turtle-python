@@ -19,7 +19,7 @@ Pour lancer le programme, pusiqu'il faut gérer de plus en plus de paramètre, i
 
 Ainsi, le programme se lance de la manière suivante 
 
-`python3 main.py --path=[path] --blur=[blur] --update=[update] --blur_type=[blur_type]`
+`python main.py --path=[path] --blur=[blur] --update=[update] --blur_type=[blur_type]`
 
 | **Arguments**  | **Type** | **Explication**                                                    |
 |:---------------|:---------|:-------------------------------------------------------------------|
