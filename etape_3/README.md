@@ -45,6 +45,7 @@ Pour initialiser **argparse**, nous procédons ainsi :
     console.add_argument('--blur', type=int)
     console.add_argument('--path', type=str)
     console.add_argument('--update', type=int)
+    console.add_argument('--blur_type', type=str)
     args = console.parse_args()
 
     # Pour récupérer une valeur
@@ -60,15 +61,22 @@ Par la suite, nous utilisons une classe Setting dans laquelle nous allons initia
 self.blur = arguments.blur
 self.update_value = arguments.update
 self.image = cv2.imread(arguments.path)
+self.blur_type = arguments.blur_type
 ```
 
-Par la suite, nous gérons les exceptions telles que l'existance de l'image à partir du chemin relatif fourni en argument et que les valeurs **blur** et **update** ne soient pas négatifs.
+Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument et que les valeurs **blur** et **update** ne soient pas négatifs.
 
 ```PYTHON
-# Si l'image n'est pas trouvée après son chargement, alors on lance une erreur
+# Si l'image n'est pas trouvée après son chargement ou que le nom du flou est erroné, alors on lance une erreur
 if self.image is None:
     print(f"Erreur : Ouverture du fichier impossible, vérifier le chemin")
     sys.exit(1)
+
+if self.blur_type is not None and self.blur_type != "gaussian" and \
+        self.blur_type != "box" and self.blur_type != "bilateral":
+            print(f"Erreur : Ce type de flou n'existe pas")
+            sys.exit(1)
+
 
 try:
     # Fonction privée dans la classe setting
@@ -92,7 +100,12 @@ Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0,
         intensity = s.blur
         if intensity % 2 == 0:
             intensity += 1
-        s.image = cv2.blur(s.image, ksize=(intensity, intensity))
+        if s.blur_type == "gaussian":
+            s.image = cv2.GaussianBlur(s.image, (intensity, intensity), 0)
+        elif s.blur_type == "box":
+            s.image = cv2.blur(s.image, (intensity, intensity))
+        elif s.blur_type == "bilateral":
+            s.image = cv2.bilateralFilter(s.image, 9, intensity, intensity)
 ```
 
 
