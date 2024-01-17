@@ -26,7 +26,7 @@ Ainsi, le programme se lance de la manière suivante
 | *"--path"*     | string   | Correspond au chemin relatif de l'image que l'on souhaite utiliser |
 | *"--blur"*     | int      | Correspond à la valeur de flou que l'on souahaite mettre ( >= 0)   |
 | *"--update"*   | int      | Correspond à la valeur de rafraichissement de la page ( >= 0)      |
-| *"--blur_type"*| string   | Correspond au type de flou appliqué, les choix possibles sont "gaussian","box" et bilaterl |
+| *"--blur_type"*| string   | Correspond au type de flou appliqué, les choix possibles sont "gaussian","box" et "bilateral" |
 
 ## Approche/logique
 
