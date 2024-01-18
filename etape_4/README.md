@@ -10,6 +10,8 @@ On utilise argparse pour récupérer les paramètres du dessin, à savoir le :
 - blur (La valeur d'intensité supérieur à 0)
 - path (Le chemin relatif du fichier)
 - update (La valeur de rafraichissement du dessin)
+- blur_type (le flou choisi par l'utilisateur)
+- mode (Choisir le mode entre l'étape 3 - imprimer | l'étape 4 - dessiner)
 
 Enfin, on utilise turtle qui est une bibliothèque graphique 'turtle' permettant de dessiner sur une feuille de papier.
 
@@ -19,13 +21,14 @@ Pour lancer le programme, pusiqu'il faut gérer de plus en plus de paramètre, i
 
 Ainsi, le programme se lance de la manière suivante 
 
-`python3 main.py --path=[path] --blur[blur] --update[update]`
+`python main.py --path=[path] --blur=[blur] --update=[update] --blur_type=[blur_type]  --mode=[mode]`
 
 | **Arguments** | **Type** | **Explication**                                                    | ** Défaut ** |
 |:--------------|:---------|:-------------------------------------------------------------------|:-------------|
 | *"--path"*    | string   | Correspond au chemin relatif de l'image que l'on souhaite utiliser | OBLIGATOIRE  |
 | *"--blur"*    | int      | Correspond à la valeur de flou que l'on souahaite mettre ( >= 0)   | 0            |
 | *"--update"*  | int      | Correspond à la valeur de rafraichissement de la page ( >= 0)      | 10           |
+| *"--blur_type"*| string   | Correspond au type de flou appliqué, les choix possibles sont "gaussian","box" et "bilateral" |
 | *"--mode"*    | string   | Mode de dessin entre l'étape 3 et 4 *(Dessin ou Imprimante)*       | 'draw'       |
 
 
@@ -44,8 +47,9 @@ Pour initialiser **argparse**, nous procédons ainsi :
 ```PYTHON
     console = argparse.ArgumentParser()
     console.add_argument('--path', type=str)
-    console.add_argument('--blur', type=int, default=0)
     console.add_argument('--update', type=int, default=10)
+    console.add_argument('--blur', type=int, default=0)
+    console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
     console.add_argument('--mode', type=str, choices=['Draw', 'Print'], default='Draw')
     args = console.parse_args()
 
@@ -90,6 +94,7 @@ Une fois les paramètres renseignés et valides, nous lançons la fonction des *
 
 Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs pairs, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
+Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place et le flou de type **box** suivant la difficulté de l'image.
 ```PYTHON
     if s.blur > 0:
         intensity = s.blur
