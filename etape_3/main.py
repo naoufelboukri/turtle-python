@@ -29,10 +29,10 @@ def big_fernand(s):
 
 def main():
     console = argparse.ArgumentParser()
-    console.add_argument('--blur', type=int)
     console.add_argument('--path', type=str)
-    console.add_argument('--update', type=int)
-    console.add_argument('--blur_type', type=str)
+    console.add_argument('--update', type=int, default=10)
+    console.add_argument('--blur', type=int, default=0)
+    console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
     args = console.parse_args()
     big_fernand(Setting(args))
 

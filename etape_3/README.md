@@ -43,11 +43,10 @@ Pour initialiser **argparse**, nous procédons ainsi :
 
 ```PYTHON
     console = argparse.ArgumentParser()
-    console.add_argument('--blur', type=int)
     console.add_argument('--path', type=str)
-    console.add_argument('--update', type=int)
-    console.add_argument('--blur_type', type=str)
-    args = console.parse_args()
+    console.add_argument('--update', type=int, default=10)
+    console.add_argument('--blur', type=int, default=0)
+    console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
 
     # Pour récupérer une valeur
     # blur = args.blur
@@ -73,12 +72,6 @@ if self.image is None:
     print(f"Erreur : Ouverture du fichier impossible, vérifier le chemin")
     sys.exit(1)
 
-if self.blur_type is not None and self.blur_type != "gaussian" and \
-        self.blur_type != "box" and self.blur_type != "bilateral":
-            print(f"Erreur : Ce type de flou n'existe pas")
-            sys.exit(1)
-
-
 try:
     # Fonction privée dans la classe setting
     upper_than_exception(self.blur, 'blur')
@@ -96,6 +89,7 @@ Une fois les paramètres renseignés et valides, nous lançons la fonction des *
 
 Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique le flou choisi pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs paires, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
+Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place et le flou de type **box** suivant la difficulté de l'image.
 ```PYTHON
     if s.blur > 0:
         intensity = s.blur
