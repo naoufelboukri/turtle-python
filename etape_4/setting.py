@@ -7,6 +7,7 @@ class Setting:
         self.update_value = arguments.update
         self.image = cv2.imread(arguments.path)
         self.mode = arguments.mode
+        self.blur_type = arguments.blur_type
 
         if self.image is None:
             print(f"Erreur : Ouverture du fichier impossible, vérifier le chemin")

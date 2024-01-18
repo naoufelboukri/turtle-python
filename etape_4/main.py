@@ -10,7 +10,12 @@ def big_fernand(s):
         intensity = s.blur
         if intensity % 2 == 0:
             intensity += 1
-        s.image = cv2.blur(s.image, ksize=(intensity, intensity))
+        if s.blur_type == "gaussian":
+            s.image = cv2.GaussianBlur(s.image, (intensity, intensity), 0)
+        elif s.blur_type == "box":
+            s.image = cv2.blur(s.image, (intensity, intensity))
+        elif s.blur_type == "bilateral":
+            s.image = cv2.bilateralFilter(s.image, 9, intensity, intensity)
     gray_image = cv2.cvtColor(s.image, cv2.COLOR_BGR2GRAY)
     median_pix = np.median(gray_image)
     lower = int(max(0, 0.25 * median_pix))
@@ -29,9 +34,9 @@ def big_fernand(s):
 
     my_turtle = MyTurtle(thresh, formatted_contours)
     my_turtle.set_tracer_active(s.update_value)
+    my_turtle.hide_turtle()
 
     if s.mode == 1:  # imprimer le dessin
-        my_turtle.hide_turtle()
         my_turtle.print()
     else:  # dessiner
         my_turtle.draw()
@@ -40,8 +45,9 @@ def big_fernand(s):
 def main():
     console = argparse.ArgumentParser()
     console.add_argument('--path', type=str)
-    console.add_argument('--blur', type=int, default=0)
     console.add_argument('--update', type=int, default=10)
+    console.add_argument('--blur', type=int, default=0)
+    console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
     console.add_argument('--mode', type=str, choices=['Draw', 'Print'], default='Draw')
     args = console.parse_args()
     big_fernand(Setting(args))
