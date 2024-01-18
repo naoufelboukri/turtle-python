@@ -10,12 +10,13 @@ On utilise argparse pour récupérer les paramètres du dessin, à savoir le :
 - blur (La valeur d'intensité supérieur à 0)
 - path (Le chemin relatif du fichier)
 - update (La valeur de rafraichissement du dessin)
+- blur_type (le flou choisi par l'utilisateur)
 
 Enfin, on utilise turtle qui est une bibliothèque graphique 'turtle' permettant de dessiner sur une feuille de papier.
 
 ## Lancer le programme
 
-Pour lancer le programme, pusiqu'il faut gérer de plus en plus de paramètre, il faut désormais lancer le programme en initialisant les paramètres en argument de la ligne de commande.
+Pour lancer le programme, pusiqu'il faut gérer de plus en plus de paramètres, il faut désormais lancer le programme en initialisant les paramètres en argument de la ligne de commande.
 
 Ainsi, le programme se lance de la manière suivante 
 
@@ -34,7 +35,7 @@ Ainsi, le programme se lance de la manière suivante
 
 #### a/ argparse
 
-Comme dit précédemment, il nous faut gérer de plus en plus de paramètres pour le lancement de notre programme. Ainsi, désormais nous utilisons la librairie **argparse** pour récupérer l'ensemble des paramètres nécessaires au projet.
+Comme dit précédemment, il nous faut gérer de plus en plus de paramètres pour lancer notre programme. Ainsi, désormais nous utilisons la librairie **argparse** pour récupérer l'ensemble des paramètres nécessaires au projet.
 
 Cette bibliothèque va gérer les erreurs en cas de type non accepté et va aussi permettre de fournir une documentation sur le lancement du programme en cas d'argument manquant.
 
@@ -64,7 +65,7 @@ self.image = cv2.imread(arguments.path)
 self.blur_type = arguments.blur_type
 ```
 
-Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument et que les valeurs **blur** et **update** ne soient pas négatifs.
+Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument, l'existence du flou choisi et que les valeurs **blur** et **update** ne soient pas négatives.
 
 ```PYTHON
 # Si l'image n'est pas trouvée après son chargement ou que le nom du flou est erroné, alors on lance une erreur
@@ -91,9 +92,9 @@ Si tous les paramètres sont valides, nous continuons le programme, à l'inverse
 
 ### 2. Création de l'image binaire
 
-Une fois les paramètres renseignés et valides, nous lançons la fonction des **étape 1-2** pour générer l'image binaire avec un flou si la valeur renseignée est supérieur à 0.
+Une fois les paramètres renseignés et valides, nous lançons la fonction des **étape 1-2** pour générer l'image binaire avec le flou choisi si la valeur renseignée est supérieur à 0.
 
-Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs pairs, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
+Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique le flou choisi pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs paires, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
 ```PYTHON
     if s.blur > 0:
@@ -158,10 +159,10 @@ my_turtle.hide_turtle()                         # Cacher le curseur
 
 #### b/ Dessiner
 
-Une fois l'objet MyTurtle initialisée, nous lançons sa méthode de dessin pour donner une impression d'impression du dessin (Le dessin se fait de haut en bas).
+Une fois l'objet MyTurtle initialisé, nous lançons sa méthode de dessin pour donner une impression d'impression du dessin (Le dessin se fait de haut en bas).
 
 Pour se faire, nous récupérons dans un premier temps les lignes et les colonnes de l'image binaire **rows** et **columns**.
-Ensuite nous faisons une boucle pour chacune d'entre elles, nous récupérons la valeur x et y qui correspond à l'interpretation des valeurs numériques pour le dessin et se calcul de cette manière.
+Ensuite nous faisons une boucle pour chacune d'entre elles, nous récupérons la valeur x et y qui correspond à l'interpretation des valeurs numériques pour le dessin et se calcule de cette manière.
 
 ```commandline
 x = colonne - colonne // 2
