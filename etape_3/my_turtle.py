@@ -18,7 +18,6 @@ class MyTurtle:
 
     def draw(self):
         rows, columns = self.img.shape
-
         for row in range(rows):
             for column in range(columns):
                 x = column - columns // 2
@@ -27,7 +26,7 @@ class MyTurtle:
                 self.t.goto(x, y)
                 if self.img[row, column] == 0:
                     self.t.pendown()
-                    self.t.dot(1)
+                    self.t.forward(1)
             self.screen.update()
 
         turtle.done()
