@@ -67,7 +67,7 @@ self.blur_type = arguments.blur_type
 Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument, l'existence du flou choisi et que les valeurs **blur** et **update** ne soient pas négatives.
 
 ```PYTHON
-# Si l'image n'est pas trouvée après son chargement ou que le nom du flou est erroné, alors on lance une erreur
+# Si l'image n'est pas trouvée après son chargement, alors on lance une erreur
 if self.image is None:
     print(f"Erreur : Ouverture du fichier impossible, vérifier le chemin")
     sys.exit(1)
