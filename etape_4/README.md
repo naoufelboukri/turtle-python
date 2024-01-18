@@ -1,4 +1,4 @@
-# Etape3
+# Etape4
 
 ## Choix Dépendances
 
@@ -69,7 +69,7 @@ self.image = cv2.imread(arguments.path)
 self.mode = arguments.mode
 ```
 
-Par la suite, nous gérons les exceptions telles que l'existance de l'image à partir du chemin relatif fourni en argument et que les valeurs **blur** et **update** ne soient pas négatifs.
+Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument, l'existence du flou choisi et que les valeurs **blur** et **update** ne soient pas négatifs.
 
 ```PYTHON
 # Si l'image n'est pas trouvée après son chargement, alors on lance une erreur
@@ -92,9 +92,9 @@ Si tous les paramètres sont valides, nous continuons le programme, à l'inverse
 
 Une fois les paramètres renseignés et valides, nous lançons la fonction des **étape 1-2** pour générer l'image binaire avec un flou si la valeur renseignée est supérieur à 0.
 
-Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique un flou gaussien pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs pairs, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
+Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique le flou choisi pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs pairs, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
-Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place et le flou de type **box** suivant la difficulté de l'image.
+Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place est le flou de type **box** suivant la difficulté de l'image.
 ```PYTHON
     if s.blur > 0:
         intensity = s.blur
