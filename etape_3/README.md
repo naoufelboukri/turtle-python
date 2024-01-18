@@ -89,7 +89,7 @@ Une fois les paramètres renseignés et valides, nous lançons la fonction des *
 
 Pour générer le flou, nous regardons si la valeur du blur est supérieur à 0, auquel cas, on applique le flou choisi pour réduire le bruit et améliorer la qualité de l'image. Nous vérifions que l'intensité est impaire car à la différence des valeurs paires, elles possèdent un point central qui permet la symétrie du flou. On va donc vérifier au préalable si la valeur est paire et l'ajuster à la valeur n+1 pour qu'elle soit impaire (ex: si 2, alors intensité à 3)
 
-Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place et le flou de type **box** suivant la difficulté de l'image.
+Après avoir testé chaque type de flou, nous constatons que le meilleur mis en place est le flou de type **box** suivant la difficulté de l'image.
 ```PYTHON
     if s.blur > 0:
         intensity = s.blur
