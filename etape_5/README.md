@@ -216,4 +216,64 @@ for row in range(rows):
     self.screen.update()
 ```
 
+#### d/ Application des couleurs (Etape 5)
+
+Après avoir dessiné les contours, nous allons maintenant appliqué les couleurs.
+
+Dans un premier temps, on appele la fonction color_image pour créér la nouvelle image. Puis, on dessine comme avec un pinceau en appelant la fonction draw_background.
+```PYTHON
+current_contour = self.draw_contour(self.contours.pop(0),original_image)
+        background =  color_image(original_image,formatted_contours)
+        while len(self.contours) > 0:
+            current_contour = self.draw_contour(self.contours.pop(search_nearest_neighbor(self.contours, current_contour)), original_image)
+            self.screen.update()       
+        self.draw_background(background)
+        turtle.exitonclick()
+```
+
+Dans un premier temps, on utilise la méthode des k plus proche voisins en utilisant 10 clusters (ou 10 couleurs).
+Ensuite on renvoie une liste de 10 élements qui représentent les points de chaque cluster où chaque point a comme information en premier argument ses coordonnés et en deuxième argument sa couleur dominante.
+
+```PYTHON
+def color_image(image, contours):
+    number_of_clusters = 10
+    pixel_tab = image.reshape(-1, 3)
+    kmeans = KMeans(n_clusters=number_of_clusters, n_init=1)
+    kmeans.fit(pixel_tab)
+    strong_colors = kmeans.cluster_centers_.astype(int)
+    for i, _ in enumerate(pixel_tab):
+        cluster_label = kmeans.labels_[i]
+        pixel_tab[i] = strong_colors[cluster_label]
+    image_reshape = pixel_tab.reshape(image.shape)
+    masks = [np.zeros(image.shape[:2], dtype=np.uint8) for x in contours]
+    for i, ctr in enumerate(contours):
+        cv2.fillPoly(masks[i], [ctr], 255)
+    for i, mask in enumerate(masks):
+        x, y = contours[i][0]  
+        image_reshape[np.where(mask == 255)] = tuple(strong_colors[kmeans.labels_[y * image.shape[1] + x]])
+    result = [[] for _ in range(10)]
+    for y in range(image_reshape.shape[1]):
+        for x in range(image_reshape.shape[0]):
+            for i in range(len(strong_colors)):
+                if strong_colors[i][0] == image_reshape[x][y][0] and strong_colors[i][1] == image_reshape[x][y][1] and strong_colors[i][2] == image_reshape[x][y][2]:
+                    result[i].append([[x,y],image_reshape[x,y]])
+                    break
+    return result
+```
+Ensuite on appele le fonction draw_background où on dessine couleur par couleur (actual_background représente la liste des points du cluster actuel). On appelle search_nearest_neighbor_background qui nous donne une liste de points dans un rayon de 20 pixels pour simuler le pinceau et optimiser le temps d'exécution.
+
+```PYTHON
+crayon , actual_background = search_nearest_neighbor_background(actual_background,actual_background.pop(index))
+               for j in range(len(crayon)-1) :
+                   current_point = crayon[j]
+                   y = current_point[0][1] - columns // 2
+                   x = rows // 2 - current_point[0][0]
+                   self.t.goto(y, x)
+                   self.t.pendown()
+                   self.t.forward(1)
+                   self.t.penup()
+               index = len(actual_background)-1
+               if len(actual_background) > 0:
+                   current_point = actual_background[index]  
+```
 
