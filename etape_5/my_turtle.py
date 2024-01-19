@@ -3,8 +3,7 @@ import math
 from sklearn.cluster import KMeans
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.spatial import cKDTree    
+    
 
 def color_image(image, contours):
     number_of_clusters = 10
