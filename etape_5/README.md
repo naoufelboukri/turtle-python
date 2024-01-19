@@ -260,7 +260,7 @@ def color_image(image, contours):
                     break
     return result
 ```
-Ensuite on appele le fonction draw_background où on dessine couleur par couleur (actual_background représente la liste des points du cluster actuel). On appelle search_nearest_neighbor_background qui nous donne une liste de points dans un rayon de 20 pixels pour simuler le pinceau et optimiser le temps d'exécution.
+Ensuite on appele la fonction draw_background où on dessine couleur par couleur (actual_background représente la liste des points du cluster actuel). On appelle search_nearest_neighbor_background qui nous donne une liste de points dans un rayon de 20 pixels pour simuler le pinceau et optimiser le temps d'exécution.
 
 ```PYTHON
 crayon , actual_background = search_nearest_neighbor_background(actual_background,actual_background.pop(index))
