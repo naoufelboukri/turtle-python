@@ -2,8 +2,7 @@ import turtle
 import math
 from sklearn.cluster import KMeans
 import cv2
-import numpy as np
-    
+import numpy as np  
 
 def color_image(image, contours):
     number_of_clusters = 10
@@ -12,8 +11,7 @@ def color_image(image, contours):
     kmeans.fit(pixel_tab)
     strong_colors = kmeans.cluster_centers_.astype(int)
     for i, _ in enumerate(pixel_tab):
-        cluster_label = kmeans.labels_[i]
-        pixel_tab[i] = strong_colors[cluster_label]
+        pixel_tab[i] = strong_colors[kmeans.labels_[i]]
     image_reshape = pixel_tab.reshape(image.shape)
     masks = [np.zeros(image.shape[:2], dtype=np.uint8) for x in contours]
     for i, ctr in enumerate(contours):
