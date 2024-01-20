@@ -13,6 +13,8 @@ On utilise argparse pour récupérer les paramètres du dessin, à savoir le :
 - blur_type (le flou choisi par l'utilisateur)
 - mode (Choisir le mode entre l'étape 3 - imprimer | l'étape 4 - dessiner)
 
+On utilise scikit-learn pour la méthode des k-moyens
+
 Enfin, on utilise turtle qui est une bibliothèque graphique 'turtle' permettant de dessiner sur une feuille de papier.
 
 ## Lancer le programme
