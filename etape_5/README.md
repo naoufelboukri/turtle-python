@@ -15,6 +15,10 @@ On utilise argparse pour récupérer les paramètres du dessin, à savoir le :
 
 On utilise scikit-learn pour la méthode des k-moyens
 
+On utilise scipy.stats pour récupérer les couleurs dominantes.
+
+On utilise PIL pour récuperer les pixels de l'image.
+
 Enfin, on utilise turtle qui est une bibliothèque graphique 'turtle' permettant de dessiner sur une feuille de papier.
 
 ## Lancer le programme
