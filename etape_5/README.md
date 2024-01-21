@@ -234,8 +234,9 @@ Après avoir dessiné les contours, nous allons maintenant appliqué les couleur
 
 Dans un premier temps, on appele la fonction color_image pour créér la nouvelle image. Puis, on dessine comme avec un pinceau en appelant la fonction draw_background.
 ```PYTHON
-current_contour = self.draw_contour(self.contours.pop(0),original_image)
-        background =  color_image(original_image,formatted_contours)
+original_image = cv2.imread(path)
+        current_contour = self.draw_contour(self.contours.pop(0),original_image)
+        background =  color_image(path,formatted_contours, number_colors,mode)
         while len(self.contours) > 0:
             current_contour = self.draw_contour(self.contours.pop(search_nearest_neighbor(self.contours, current_contour)), original_image)
             self.screen.update()       
