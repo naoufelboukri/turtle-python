@@ -2,3 +2,4 @@ opencv-python
 numpy
 turtle
 scikit-learn
+Pillow
