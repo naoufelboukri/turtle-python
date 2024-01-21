@@ -31,13 +31,13 @@ def big_fernand(s):
         formatted_contours.append(c)
 
     my_turtle = MyTurtle(thresh, formatted_contours)
-    my_turtle.set_tracer_active(s.update_value)
     my_turtle.hide_turtle()
-
-    if s.mode == 1:  # imprimer le dessin
-        my_turtle.print(s.image)
+    my_turtle.set_tracer_active(s.update_value)
+    
+    if s.mode == 'Print':  # imprimer le dessin
+        my_turtle.print(s.path, formatted_contours,s.number_colors,s.mode)
     else:  # dessiner
-        my_turtle.draw(s.image, formatted_contours)
+        my_turtle.draw(s.path, formatted_contours, s.number_colors,s.mode)
 
 
 def main():
@@ -47,6 +47,7 @@ def main():
     console.add_argument('--blur', type=int, default=0)
     console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
     console.add_argument('--mode', type=str, choices=['Draw', 'Print'], default='Draw')
+    console.add_argument('--number_colors', type=int, default=10 )
     args = console.parse_args()
     big_fernand(Setting(args))
 
