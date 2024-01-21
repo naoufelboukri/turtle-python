@@ -238,29 +238,44 @@ Dans un premier temps, on utilise la méthode des k plus proche voisins en utili
 Ensuite on renvoie une liste de 10 élements qui représentent les points de chaque cluster où chaque point a comme information en premier argument ses coordonnés et en deuxième argument sa couleur dominante.
 
 ```PYTHON
-def color_image(image, contours):
-    number_of_clusters = 10
+def color_image(path,formatted_contours, number_colors, mode):
+    image = cv2.imread(path)
+    image2 = Image.open(path).convert('RGB')
+    formatted_contours = np.concatenate(formatted_contours)
+    number_of_clusters = number_colors
     pixel_tab = image.reshape(-1, 3)
-    kmeans = KMeans(n_clusters=number_of_clusters, n_init=1)
-    kmeans.fit(pixel_tab)
+    tableau = []
+    for y in range(image2.height):
+        for x in range(image2.width):
+            tableau.append(image2.getpixel((x,y)))
+
+    kmeans = KMeans(n_clusters=number_of_clusters, n_init=1,random_state=42)
+    kmeans.fit(pixel_tab) 
+    max_colors = [[0, 0, 0] for _ in range(number_colors)]
+    colors = [ [] for _ in range(number_colors)]
     strong_colors = kmeans.cluster_centers_.astype(int)
     for i, _ in enumerate(pixel_tab):
-        pixel_tab[i] = strong_colors[kmeans.labels_[i]]
+        colors[kmeans.labels_[i]].append(tableau[i])
+        pixel_tab[i] = strong_colors[kmeans.labels_[i]]       
+    for i in range(len(colors)):
+        max_colors[i] =  scipy_mode(colors[i]).mode[0].tolist()   
     image_reshape = pixel_tab.reshape(image.shape)
-    masks = [np.zeros(image.shape[:2], dtype=np.uint8) for x in contours]
-    for i, ctr in enumerate(contours):
-        cv2.fillPoly(masks[i], [ctr], 255)
-    for i, mask in enumerate(masks):
-        x, y = contours[i][0]  
-        image_reshape[np.where(mask == 255)] = tuple(strong_colors[kmeans.labels_[y * image.shape[1] + x]])
-    result = [[] for _ in range(10)]
+    for k in range(len(formatted_contours)):
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][0] = 0
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][1] = 0   
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][2] = 0
+    result = [[] for _ in range(number_colors)]
     for y in range(image_reshape.shape[1]):
         for x in range(image_reshape.shape[0]):
             for i in range(len(strong_colors)):
                 if strong_colors[i][0] == image_reshape[x][y][0] and strong_colors[i][1] == image_reshape[x][y][1] and strong_colors[i][2] == image_reshape[x][y][2]:
-                    result[i].append([[x,y],image_reshape[x,y]])
+                    result[i].append([[x,y],max_colors[i]])
+                    image_reshape[x][y] = max_colors[i]
                     break
-    return result
+    if mode == 'Print':
+        return image_reshape
+    else:
+        return result
 ```
 Ensuite on appele la fonction draw_background où on dessine couleur par couleur (actual_background représente la liste des points du cluster actuel). On appelle search_nearest_neighbor_background qui nous donne une liste de points dans un rayon de 20 pixels pour simuler le pinceau et optimiser le temps d'exécution.
 
