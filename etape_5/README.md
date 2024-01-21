@@ -71,6 +71,9 @@ self.blur = arguments.blur
 self.update_value = arguments.update
 self.image = cv2.imread(arguments.path)
 self.mode = arguments.mode
+self.number_colors = arguments.number_colors
+self.path = arguments.path
+
 ```
 
 Par la suite, nous gérons les exceptions telles que l'existence de l'image à partir du chemin relatif fourni en argument, l'existence du flou choisi et que les valeurs **blur** et **update** ne soient pas négatifs.
