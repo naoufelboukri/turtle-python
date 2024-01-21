@@ -235,7 +235,7 @@ current_contour = self.draw_contour(self.contours.pop(0),original_image)
 ```
 
 Dans un premier temps, on utilise la méthode des k plus proche voisins en utilisant n clusters (n : nombre de couleurs choisies, par défaut 10)pour définir les clusters.
-Ensuite on renvoie une liste de n élements qui représentent les points de chaque cluster où chaque point a comme information en premier argument ses coordonnés et en deuxième argument sa couleur dominante(la couleur avec la plus forte récurrence).
+Ensuite on renvoie une liste de n élements qui représentent les points de chaque cluster où chaque point a comme information en premier argument ses coordonnés et en deuxième argument sa couleur dominante(la couleur avec le plus grand nombre d'occurrences).
 
 ```PYTHON
 def color_image(path,formatted_contours, number_colors, mode):
