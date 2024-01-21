@@ -3,3 +3,4 @@ numpy
 turtle
 scikit-learn
 Pillow
+scipy
