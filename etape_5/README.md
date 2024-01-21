@@ -32,6 +32,7 @@ Ainsi, le programme se lance de la manière suivante
 | *"--update"*  | int      | Correspond à la valeur de rafraichissement de la page ( >= 0)      | 10           |
 | *"--blur_type"*| string   | Correspond au type de flou appliqué, les choix possibles sont "gaussian","box" et "bilateral" | 'box' |
 | *"--mode"*    | string   | Mode de dessin entre l'étape 3 et 4 *(Dessin ou Imprimante)*       | 'draw'       |
+| *"--number_colors"*    | int   | Nombre de couleurs choisies par l'utilisateur      | 10       |
 
 
 ## Approche/logique
