@@ -1,32 +1,50 @@
 import turtle
 import math
 from sklearn.cluster import KMeans
+from scipy.stats import mode as scipy_mode
 import cv2
-import numpy as np  
+import numpy as np 
+from PIL import Image
 
-def color_image(image, contours):
-    number_of_clusters = 10
+
+def color_image(path,formatted_contours, number_colors, mode):
+    image = cv2.imread(path)
+    image2 = Image.open(path).convert('RGB')
+    formatted_contours = np.concatenate(formatted_contours)
+    number_of_clusters = number_colors
     pixel_tab = image.reshape(-1, 3)
-    kmeans = KMeans(n_clusters=number_of_clusters, n_init=1)
-    kmeans.fit(pixel_tab)
+    tableau = []
+    for y in range(image2.height):
+        for x in range(image2.width):
+            tableau.append(image2.getpixel((x,y)))
+
+    kmeans = KMeans(n_clusters=number_of_clusters, n_init=1,random_state=42)
+    kmeans.fit(pixel_tab) 
+    max_colors = [[0, 0, 0] for _ in range(number_colors)]
+    colors = [ [] for _ in range(number_colors)]
     strong_colors = kmeans.cluster_centers_.astype(int)
     for i, _ in enumerate(pixel_tab):
-        pixel_tab[i] = strong_colors[kmeans.labels_[i]]
+        colors[kmeans.labels_[i]].append(tableau[i])
+        pixel_tab[i] = strong_colors[kmeans.labels_[i]]       
+    for i in range(len(colors)):
+        max_colors[i] =  scipy_mode(colors[i]).mode[0].tolist()   
     image_reshape = pixel_tab.reshape(image.shape)
-    masks = [np.zeros(image.shape[:2], dtype=np.uint8) for x in contours]
-    for i, ctr in enumerate(contours):
-        cv2.fillPoly(masks[i], [ctr], 255)
-    for i, mask in enumerate(masks):
-        x, y = contours[i][0]  
-        image_reshape[np.where(mask == 255)] = tuple(strong_colors[kmeans.labels_[y * image.shape[1] + x]])
-    result = [[] for _ in range(10)]
+    for k in range(len(formatted_contours)):
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][0] = 0
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][1] = 0   
+        image_reshape[formatted_contours[k][1]][formatted_contours[k][0]][2] = 0
+    result = [[] for _ in range(number_colors)]
     for y in range(image_reshape.shape[1]):
         for x in range(image_reshape.shape[0]):
             for i in range(len(strong_colors)):
                 if strong_colors[i][0] == image_reshape[x][y][0] and strong_colors[i][1] == image_reshape[x][y][1] and strong_colors[i][2] == image_reshape[x][y][2]:
-                    result[i].append([[x,y],image_reshape[x,y]])
+                    result[i].append([[x,y],max_colors[i]])
+                    image_reshape[x][y] = max_colors[i]
                     break
-    return result
+    if mode == 'Print':
+        return image_reshape
+    else:
+        return result
 
 def normalize_color(color):
     return tuple(component / 255 for component in color)
@@ -81,8 +99,9 @@ class MyTurtle:
     def hide_turtle(self):
         self.t.hideturtle()
 
-    def print(self,original_image):
+    def print(self,path, formatted_contours, number_colors,mode):
         rows, columns = self.img.shape
+        background =  color_image(path,formatted_contours, number_colors,mode)
         for row in range(rows):
             for column in range(columns):
                 x = column - columns // 2
@@ -91,14 +110,20 @@ class MyTurtle:
                 self.t.goto(x, y)
                 if self.img[row, column] == 0:
                     self.t.pendown()
-                    original_color = color_normalized(tuple(original_image[y,x]))
+                    self.t.pencolor("black")
+                    self.t.forward(1)
+                else:
+                    self.t.pendown()
+                    original_color = color_normalized(tuple(background[row][column]))
                     self.t.pencolor(original_color)
-                    self.t.dot(1)
+                    self.t.forward(1)
             self.screen.update()
+        self.print_background(background)
 
-    def draw(self,original_image, formatted_contours):
+    def draw(self,path, formatted_contours, number_colors,mode):
+        original_image = cv2.imread(path)
         current_contour = self.draw_contour(self.contours.pop(0),original_image)
-        background =  color_image(original_image,formatted_contours)
+        background =  color_image(path,formatted_contours, number_colors,mode)
         while len(self.contours) > 0:
             current_contour = self.draw_contour(self.contours.pop(search_nearest_neighbor(self.contours, current_contour)), original_image)
             self.screen.update()       
@@ -114,8 +139,7 @@ class MyTurtle:
         y = rows // 2 - contour[0][1]
         self.t.goto(x, y)
         self.t.pendown()
-        original_color = color_normalized(tuple(original_image[contour[0][1],contour[0][0]]))
-        self.t.pencolor(original_color)
+        self.t.pencolor("black")
         for point in contour[1:]:
             x = point[0] - columns // 2
             y = rows // 2 - point[1]
@@ -128,7 +152,7 @@ class MyTurtle:
             actual_background = background[i]
             index = 0
             current_point = actual_background[index]
-            while len(actual_background) > 0:            
+            while len(actual_background) > 0:          
                y = current_point[0][1] - columns // 2
                x = rows // 2 - current_point[0][0]
                self.screen.update() 
@@ -150,4 +174,21 @@ class MyTurtle:
                index = len(actual_background)-1
                if len(actual_background) > 0:
                    current_point = actual_background[index]  
+
+    def print_background(self, background):
+        rows, columns = self.img.shape
+        for i in range(len(background)):
+            actual_background = background[i]
+            for j in range(len(actual_background)):
+               current_point = actual_background[j]          
+               y = current_point[0][1] - columns // 2
+               x = rows // 2 - current_point[0][0]
+               self.screen.update() 
+               self.t.goto(y, x)
+               self.t.pendown()
+               original_color = color_normalized(tuple(current_point[1]))
+               self.t.pencolor(original_color)
+               self.t.forward(1)
+               self.t.penup()
+               
     
