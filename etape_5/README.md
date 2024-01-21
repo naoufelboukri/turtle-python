@@ -54,6 +54,7 @@ Pour initialiser **argparse**, nous procédons ainsi :
     console.add_argument('--blur', type=int, default=0)
     console.add_argument('--blur_type', type=str, choices=['box', 'gaussian', 'bilateral'], default='box')
     console.add_argument('--mode', type=str, choices=['Draw', 'Print'], default='Draw')
+    console.add_argument('--number_colors', type=int, default=10 )
     args = console.parse_args()
 
     # Pour récupérer une valeur
@@ -84,6 +85,7 @@ try:
     # Fonction privée dans la classe setting
     upper_than_exception(self.blur, 'blur')
     upper_than_exception(self.update_value, 'update')
+    upper_than_exception(self.number_colors, 'number_colors',1)
 except ValueError as e:
     print(str(e))
     sys.exit(1)
