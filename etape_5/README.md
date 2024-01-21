@@ -15,7 +15,7 @@ On utilise argparse pour récupérer les paramètres du dessin, à savoir le :
 
 On utilise scikit-learn pour la méthode des k-moyens
 
-On utilise scipy pour récupérer les couleurs dominantes.
+On utilise scipy pour calculer les couleurs dominantes.
 
 On utilise Pillow pour récuperer les pixels de l'image.
 
